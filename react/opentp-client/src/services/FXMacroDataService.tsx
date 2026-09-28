@@ -70,10 +70,6 @@ export default class FXMacroDataService {
     return this.get(`/press-releases/${normalize(currency)}`, query);
   }
 
-  centralBankers(currency: string) {
-    return this.get(`/central_bankers/${normalize(currency)}`);
-  }
-
   async get(path: string, query: FXMacroDataQuery = {}) {
     const headers: Record<string, string> = {};
     if (this.apiKey) headers['X-API-Key'] = this.apiKey;
