@@ -1,5 +1,9 @@
 export type FXMacroDataQuery = Record<string, string | number | boolean | undefined | null>;
 
+// List endpoints return 20 rows by default and at most 100 per request, newest
+// first. Pass { limit, offset } in the query and request the next page with the
+// response's pagination.next_offset while pagination.has_more is true.
+
 export default class FXMacroDataService {
   constructor(
     private readonly apiKey?: string,
@@ -10,32 +14,32 @@ export default class FXMacroDataService {
     return this.get(`/data_catalogue/${normalize(currency)}`);
   }
 
-  announcements(currency: string, indicator: string) {
-    return this.get(`/announcements/${normalize(currency)}/${indicator}`);
+  announcements(currency: string, indicator: string, query: FXMacroDataQuery = {}) {
+    return this.get(`/announcements/${normalize(currency)}/${indicator}`, query);
   }
 
   calendar(currency: string) {
     return this.get(`/calendar/${normalize(currency)}`);
   }
 
-  predictions(currency: string, indicator: string) {
-    return this.get(`/predictions/${normalize(currency)}/${indicator}`);
+  predictions(currency: string, indicator: string, query: FXMacroDataQuery = {}) {
+    return this.get(`/predictions/${normalize(currency)}/${indicator}`, query);
   }
 
-  forex(base: string, quote: string) {
-    return this.get(`/forex/${normalize(base)}/${normalize(quote)}`);
+  forex(base: string, quote: string, query: FXMacroDataQuery = {}) {
+    return this.get(`/forex/${normalize(base)}/${normalize(quote)}`, query);
   }
 
-  cot(currency: string) {
-    return this.get(`/cot/${normalize(currency)}`);
+  cot(currency: string, query: FXMacroDataQuery = {}) {
+    return this.get(`/cot/${normalize(currency)}`, query);
   }
 
   commoditiesLatest() {
     return this.get('/commodities/latest');
   }
 
-  commodity(indicator: string) {
-    return this.get(`/commodities/${indicator}`);
+  commodity(indicator: string, query: FXMacroDataQuery = {}) {
+    return this.get(`/commodities/${indicator}`, query);
   }
 
   curves(currency: string) {
@@ -62,8 +66,8 @@ export default class FXMacroDataService {
     return this.get(`/news/${normalize(currency)}`);
   }
 
-  pressReleases(currency: string) {
-    return this.get(`/press-releases/${normalize(currency)}`);
+  pressReleases(currency: string, query: FXMacroDataQuery = {}) {
+    return this.get(`/press-releases/${normalize(currency)}`, query);
   }
 
   centralBankers(currency: string) {
