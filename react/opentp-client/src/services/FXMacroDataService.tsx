@@ -71,14 +71,15 @@ export default class FXMacroDataService {
   }
 
   async get(path: string, query: FXMacroDataQuery = {}) {
-    const response = await fetch(this.url(path, query));
+    const headers: Record<string, string> = {};
+    if (this.apiKey) headers['X-API-Key'] = this.apiKey;
+    const response = await fetch(this.url(path, query), { headers });
     if (!response.ok) throw new Error(`FXMacroData request failed: ${response.status}`);
     return response.json();
   }
 
   url(path: string, query: FXMacroDataQuery = {}) {
     const params = new URLSearchParams();
-    if (this.apiKey) params.set('api_key', this.apiKey);
     for (const [key, value] of Object.entries(query)) {
       if (value !== undefined && value !== null) params.set(key, String(value));
     }
